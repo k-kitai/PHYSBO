@@ -1,6 +1,14 @@
 physbo.misc package
 ===================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   physbo.misc.src
+
 Submodules
 ----------
 

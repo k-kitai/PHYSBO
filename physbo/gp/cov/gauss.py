@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 import numpy as np
 from scipy import spatial
-from ._src.enhance_gauss import grad_width64
+
+# from ._src.enhance_gauss import grad_width64
 
 
 class gauss:
@@ -384,3 +385,34 @@ class gauss:
             scale = np.std(t)
             params = np.append(np.log(width + 1e-8), np.log(scale))
         return params
+
+
+def grad_width64(X, width, G):
+    """
+    Gradiant along width direction (64bit).
+
+    Parameters
+    ----------
+    X: numpy.ndarray[numpy.float64_t, ndim = 2]
+
+    width: numpy.ndarray[numpy.float64_t, ndim = 1]
+        The grid width
+    G: numpy.ndarray[numpy.float64_t, ndim = 2]
+        The gram matrix
+    Returns
+    -------
+    numpy.ndarray
+    """
+    N = X.shape[0]
+    D = X.shape[1]
+
+    gradG = np.zeros([D, N, N], dtype=np.float64)
+
+    for d in range(D):
+        for i in range(N):
+            for j in range(i, N):
+                gradG[d, i, j] = (X[i, d] - X[j, d]) / width[d]
+                gradG[d, i, j] = gradG[d, i, j] ** 2 * G[i, j]
+                if i != j:
+                    gradG[d, j, i] = gradG[d, i, j]
+    return gradG
