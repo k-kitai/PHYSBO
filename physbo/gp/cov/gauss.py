@@ -410,9 +410,8 @@ def grad_width64(X, width, G):
 
     for d in range(D):
         for i in range(N):
-            for j in range(i, N):
+            for j in range(i+1, N):
                 gradG[d, i, j] = (X[i, d] - X[j, d]) / width[d]
                 gradG[d, i, j] = gradG[d, i, j] ** 2 * G[i, j]
-                if i != j:
-                    gradG[d, j, i] = gradG[d, i, j]
+                gradG[d, j, i] = gradG[d, i, j]
     return gradG

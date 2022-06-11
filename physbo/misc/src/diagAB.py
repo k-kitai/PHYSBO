@@ -16,13 +16,16 @@ def diagAB_64(A, B):
     d: np.ndarray
         Diagonal part of the matrix AB
     """
-    N = A.shape[0]
-    M = A.shape[1]
 
-    diagAB = np.zeros(N, dtype=np.float64)
+    return np.einsum("ij,ji->i", A, B)
 
-    for i in range(N):
-        for j in range(M):
-            diagAB[i] += A[i, j] * B[j, i]
-
-    return diagAB
+    # N = A.shape[0]
+    # M = A.shape[1]
+    #
+    # diagAB = np.zeros(N, dtype=np.float64)
+    #
+    # for i in range(N):
+    #     for j in range(M):
+    #         diagAB[i] += A[i, j] * B[j, i]
+    #
+    # return diagAB

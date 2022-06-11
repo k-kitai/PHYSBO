@@ -8,12 +8,14 @@ def logsumexp64(x):
     ==========
     x: np.ndarray
     """
-    N = x.shape[0]
-    tmp = 0.0
 
     xmax = np.max(x)
+    return np.log(np.sum(np.exp(x-xmax))) + xmax
 
-    for i in range(0, N):
-        tmp += np.exp(x[i] - xmax)
-
-    return np.log(tmp) + xmax
+    # N = x.shape[0]
+    # tmp = 0.0
+    #
+    # for i in range(0, N):
+    #     tmp += np.exp(x[i] - xmax)
+    #
+    # return np.log(tmp) + xmax
