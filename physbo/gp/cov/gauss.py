@@ -405,13 +405,15 @@ def grad_width64(X, width, G):
     """
     N = X.shape[0]
     D = X.shape[1]
+    iw = np.reshape(1.0/width, (1,1,D))
+    gradG = iw * (X.reshape(N,1,D) - X.reshape(1,N,D))
+    gradG = np.einsum("ijd,ij->dij", gradG ** 2, G)
 
-    gradG = np.zeros([D, N, N], dtype=np.float64)
-
-    for d in range(D):
-        for i in range(N):
-            for j in range(i+1, N):
-                gradG[d, i, j] = (X[i, d] - X[j, d]) / width[d]
-                gradG[d, i, j] = gradG[d, i, j] ** 2 * G[i, j]
-                gradG[d, j, i] = gradG[d, i, j]
+    # gradG = np.zeros([D, N, N], dtype=np.float64)
+    # for d in range(D):
+    #     for i in range(N):
+    #         for j in range(i+1, N):
+    #             gradG[d, i, j] = (X[i, d] - X[j, d]) / width[d]
+    #             gradG[d, i, j] = gradG[d, i, j] ** 2 * G[i, j]
+    #             gradG[d, j, i] = gradG[d, i, j]
     return gradG
