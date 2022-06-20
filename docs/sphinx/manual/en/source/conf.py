@@ -32,9 +32,9 @@ copyright = "2020-, PHYSBO developers"
 author = "PHYSBO developers"
 
 # The short X.Y version.
-version = "1.1-dev"
+version = "1.2"
 # The full version, including alpha/beta/rc tags.
-release = "1.1-dev"
+release = "1.2-dev"
 
 # for jupyter-notebook
 

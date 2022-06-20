@@ -133,8 +133,8 @@ class policy(discrete.policy):
 
             time_total = time.time()
             if is_disp and N > 1:
-                utility.show_start_message_multi_search_mo(
-                    self.history.num_runs, "random"
+                utility.show_start_message_multi_search(
+                    self.history.num_runs, score="random"
                 )
 
             time_get_action = time.time()
@@ -181,6 +181,9 @@ class policy(discrete.policy):
 
         if self.mpirank != 0:
             is_disp = False
+
+        old_disp = self.config.learning.is_disp
+        self.config.learning.is_disp = is_disp
 
         if max_num_probes is None:
             max_num_probes = 1
@@ -230,9 +233,11 @@ class policy(discrete.policy):
             if N_indeed == 0:
                 if self.mpirank == 0:
                     print("WARNING: All actions have already searched.")
+                self.config.learning.is_disp = old_disp
                 return copy.deepcopy(self.history)
 
             if simulator is None:
+                self.config.learning.is_disp = old_disp
                 return action
 
             time_run_simulator = time.time()
@@ -254,6 +259,7 @@ class policy(discrete.policy):
                     self.history, N, disp_pareto_set=disp_pareto_set
                 )
         self._update_predictor()
+        self.config.learning.is_disp = old_disp
         return copy.deepcopy(self.history)
 
     def _get_actions(self, mode, N, K, alpha):
